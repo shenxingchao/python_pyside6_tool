@@ -1,0 +1,43 @@
+#centralwidget {
+  border: 1px solid #c6c6c6;
+  background: #fafafa;
+  border-radius: 4px;
+}
+#centralwidget {
+  QPushButton {
+    padding: 8px 20px;
+    // background: rgb(8, 158, 228);
+    background-color: ~"qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0 #65B1FB,stop:1 #2183F6)";
+    color: #ffffff;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    &:hover {
+      background-color: ~"qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0 #5DA0E0,stop:1 #2179E3)";
+    }
+  }
+  #auto_send_form_widget {
+    background: #f1f1f1;
+    border-radius: 4px;
+    #auto_send_pos_input,
+    #auto_send_time_input,
+    #auto_send_content_input,
+    #auto_send_count_input {
+      padding: 10px;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+    #auto_send_get_post_btn {
+      background-color: ~"qlineargradient(x1:0, y1:0, x2:1, y2:1,stop:0 #e98848,stop:1 #e77426)";
+      &:hover {
+        background-color: ~"qlineargradient(x1:0, y1:0, x2:1, y2:1,stop:0 #e77930,stop:1 #e76712)";
+      }
+    }
+    #auto_send_submit_btn {
+      background: #11b643;
+      &:hover {
+        background: #079933;
+      }
+    }
+  }
+}
