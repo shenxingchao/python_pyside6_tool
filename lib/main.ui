@@ -76,12 +76,15 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn3">
+         <widget class="QPushButton" name="record_btn">
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="text">
-           <string>占位</string>
+           <string>录制脚本</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -107,7 +110,7 @@
         <item>
          <widget class="QStackedWidget" name="main_container_widget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="default_page">
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -259,6 +262,112 @@
             </item>
            </layout>
           </widget>
+          <widget class="QWidget" name="record_form_widget">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>20</number>
+            </property>
+            <property name="topMargin">
+             <number>20</number>
+            </property>
+            <property name="rightMargin">
+             <number>20</number>
+            </property>
+            <property name="bottomMargin">
+             <number>20</number>
+            </property>
+            <item>
+             <layout class="QFormLayout" name="record_form_layout">
+              <property name="horizontalSpacing">
+               <number>20</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>20</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="record_type_label">
+                <property name="text">
+                 <string>录制类型</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <layout class="QHBoxLayout" name="record_type_layout" stretch="0,1">
+                <property name="spacing">
+                 <number>20</number>
+                </property>
+                <item>
+                 <widget class="QCheckBox" name="record_type_checkbox_1">
+                  <property name="text">
+                   <string>鼠标</string>
+                  </property>
+                  <attribute name="buttonGroup">
+                   <string notr="true">record_type_checkbox_group</string>
+                  </attribute>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="record_type_checkbox_2">
+                  <property name="text">
+                   <string>键盘</string>
+                  </property>
+                  <attribute name="buttonGroup">
+                   <string notr="true">record_type_checkbox_group</string>
+                  </attribute>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="record_play_count_label">
+                <property name="text">
+                 <string>循环次数</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="record_play_count_input">
+                <property name="text">
+                 <string>1</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="record_submit_btn">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>开始录制</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QPushButton" name="record_play_btn">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>播放</string>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -309,8 +418,8 @@
    <slot>handleClickAutoSendGetPosBtn()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>42</x>
-     <y>227</y>
+     <x>84</x>
+     <y>293</y>
     </hint>
     <hint type="destinationlabel">
      <x>-14</x>
@@ -325,12 +434,60 @@
    <slot>handleClickAutoSendSubmitBtn(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>310</x>
-     <y>231</y>
+     <x>457</x>
+     <y>293</y>
     </hint>
     <hint type="destinationlabel">
      <x>562</x>
      <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>record_btn</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>handleClickRecordBtn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>2</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>record_submit_btn</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>handleClickChangeRecord(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-25</x>
+     <y>221</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>record_play_btn</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>handleClickPlayRecord(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
+     <y>196</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>
@@ -340,5 +497,15 @@
   <slot>handleClickAutoSendBtn()</slot>
   <slot>handleClickAutoSendGetPosBtn()</slot>
   <slot>handleClickAutoSendSubmitBtn(bool)</slot>
+  <slot>handleClickRecordBtn(bool)</slot>
+  <slot>handleClickChangeRecord(bool)</slot>
+  <slot>handleClickPlayRecord(bool)</slot>
  </slots>
+ <buttongroups>
+  <buttongroup name="record_type_checkbox_group">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
+ </buttongroups>
 </ui>

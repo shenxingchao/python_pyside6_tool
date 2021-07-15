@@ -3,6 +3,8 @@
 打包后，需要把qss和images文件夹拖到应用根目录 
 其他问题 设置了centralwidget 背景色导致按钮背景色不见的问题，需要把centralwidget的背景色也放到qss里面去，反正全部写在css里面读取就可以了
 """
+from re import T
+from time import sleep
 from PySide6 import QtGui, QtWidgets
 from PySide6.QtCore import QRect, QSize, Qt, QTimer
 from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QPushButton
@@ -17,6 +19,12 @@ import pyperclip
 
 # 全局键盘监听
 import keyboard
+
+# 鼠标监听
+import mouse
+
+# 导入多线程
+from threading import Thread
 
 """ copy start """
 # 默认标题栏高度 必须设
@@ -567,6 +575,80 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             # 停止定时器
             self.auto_send_timer.stop()
+
+    def handleClickRecordBtn(self):
+        """
+        @description 点击录制脚本
+        @param
+        @return
+        """
+        self.main_container_widget.setCurrentIndex(2)
+
+    def handleClickChangeRecord(self, bool):
+        """
+        @description 点击开始录制按钮
+        @param
+        @return
+        """
+        # 开启
+        if bool:
+            self.record_submit_btn.setText("停止（ESC）")
+            # 定义2个录制类型的选中全局变量 和 录制脚本对象变量
+            self.mouse_checked = False
+            self.keyboard_checked = False
+            self.mouse_record = None
+            self.keyboard_record = None
+            # 推导式语法 获取选中的checkbox
+            checkboxs = [checkbox for checkbox in self.record_type_checkbox_group.buttons() if checkbox.isChecked()]
+            # 选中鼠标录制
+            if self.record_type_checkbox_1 in checkboxs:
+                # 设为选中
+                self.mouse_checked = True
+                self.mouse_record = []
+                # 开启鼠标录制
+                mouse.hook(self.mouse_record.append)
+            # 选中键盘录制
+            if self.record_type_checkbox_2 in checkboxs:
+                # 设为选中
+                self.keyboard_checked = True
+                # 开启键盘录制
+                keyboard.start_recording()
+        # 关闭
+        else:
+            self.record_submit_btn.setText("开始录制")
+            if self.mouse_checked:
+                # 停止鼠标录制
+                mouse.unhook(self.mouse_record.append)
+            if self.keyboard_checked:
+                # 停止键盘录制
+                self.keyboard_record = keyboard.stop_recording()
+
+    def handleClickPlayRecord(self, bool):
+        """
+        @description 点击播放按钮
+        @param
+        @return
+        """
+        # 使用多个线程播放录制
+        self.t1 = None
+        self.t2 = None
+        if self.mouse_record:
+            self.t1 = Thread(target=lambda: mouse.play(self.mouse_record))
+            # 开启线程t1
+            self.t1.start()
+        if self.keyboard_record:
+            self.t2 = Thread(
+                target=lambda: keyboard.play(
+                    self.keyboard_record, speed_factor=int(self.record_play_count_input.text())
+                )
+            )
+            self.t2.start()
+        # 等待t1线程执行完毕
+        if self.t1:
+            self.t1.join()
+        # 等待t2线程执行结束
+        if self.t2:
+            self.t2.join()
 
 
 def main():

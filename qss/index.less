@@ -16,9 +16,12 @@
       background-color: ~"qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0 #5DA0E0,stop:1 #2179E3)";
     }
   }
-  #auto_send_form_widget {
+  #auto_send_form_widget,
+  #record_form_widget {
     background: #f1f1f1;
     border-radius: 4px;
+  }
+  #auto_send_form_widget {
     #auto_send_pos_input,
     #auto_send_time_input,
     #auto_send_content_input,
@@ -34,6 +37,25 @@
       }
     }
     #auto_send_submit_btn {
+      background: #11b643;
+      &:hover {
+        background: #079933;
+      }
+    }
+  }
+  #record_form_widget {
+    #record_play_count_input {
+      padding: 10px;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+    #record_submit_btn {
+      background-color: ~"qlineargradient(x1:0, y1:0, x2:1, y2:1,stop:0 #e98848,stop:1 #e77426)";
+      &:hover {
+        background-color: ~"qlineargradient(x1:0, y1:0, x2:1, y2:1,stop:0 #e77930,stop:1 #e76712)";
+      }
+    }
+    #record_play_btn {
       background: #11b643;
       &:hover {
         background: #079933;
