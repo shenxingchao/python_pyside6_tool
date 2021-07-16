@@ -3,8 +3,6 @@
 打包后，需要把qss和images文件夹拖到应用根目录 
 其他问题 设置了centralwidget 背景色导致按钮背景色不见的问题，需要把centralwidget的背景色也放到qss里面去，反正全部写在css里面读取就可以了
 """
-from re import T
-from time import sleep
 from PySide6 import QtGui, QtWidgets
 from PySide6.QtCore import QRect, QSize, Qt, QTimer
 from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QPushButton
@@ -25,6 +23,9 @@ import mouse
 
 # 导入多线程
 from threading import Thread
+
+# 迭代工具
+import itertools as it
 
 """ copy start """
 # 默认标题栏高度 必须设
@@ -611,8 +612,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.record_type_checkbox_2 in checkboxs:
                 # 设为选中
                 self.keyboard_checked = True
+                self.keyboard_record = []
                 # 开启键盘录制
-                keyboard.start_recording()
+                keyboard.hook(self.keyboard_record.append)
         # 关闭
         else:
             self.record_submit_btn.setText("开始录制")
@@ -621,34 +623,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 mouse.unhook(self.mouse_record.append)
             if self.keyboard_checked:
                 # 停止键盘录制
-                self.keyboard_record = keyboard.stop_recording()
+                keyboard.unhook(self.keyboard_record.append)
 
     def handleClickPlayRecord(self, bool):
         """
-        @description 点击播放按钮
+        @description 点击播放按钮 同时播放代码来自 https://github.com/boppreh/mouse/issues/5
         @param
         @return
         """
-        # 使用多个线程播放录制
-        self.t1 = None
-        self.t2 = None
+        speed_factor = int(self.record_play_count_input.text())
+        # 只播放鼠标
         if self.mouse_record:
-            self.t1 = Thread(target=lambda: mouse.play(self.mouse_record))
-            # 开启线程t1
-            self.t1.start()
+            mouse.play(self.mouse_record, speed_factor=speed_factor)
+        # 只播放键盘
         if self.keyboard_record:
-            self.t2 = Thread(
-                target=lambda: keyboard.play(
-                    self.keyboard_record, speed_factor=int(self.record_play_count_input.text())
-                )
-            )
-            self.t2.start()
-        # 等待t1线程执行完毕
-        if self.t1:
-            self.t1.join()
-        # 等待t2线程执行结束
-        if self.t2:
-            self.t2.join()
+            keyboard.play(self.keyboard_record, speed_factor=speed_factor)
+        # 同时播放鼠标键盘
+        if self.mouse_record and self.keyboard_record:
+            k = sorted(self.mouse_record + self.keyboard_record, key=lambda i: i.time)
+            for c, m in it.groupby(k, key=lambda i: isinstance(i, keyboard.KeyboardEvent)):
+                if c:
+                    keyboard.play(m, speed_factor=speed_factor)
+                else:
+                    mouse.play(m, speed_factor=speed_factor)
 
 
 def main():

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainDSeGBv.ui'
+## Form generated from reading UI file 'mainmiAvaW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -227,7 +227,7 @@ class Ui_MainWindow(object):
         self.record_submit_btn.clicked.connect(MainWindow.handleClickChangeRecord)
         self.record_play_btn.clicked.connect(MainWindow.handleClickPlayRecord)
 
-        self.main_container_widget.setCurrentIndex(2)
+        self.main_container_widget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
