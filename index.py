@@ -633,10 +633,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         speed_factor = int(self.record_play_count_input.text())
         # 只播放鼠标
-        if self.mouse_record:
+        if self.mouse_record and not self.keyboard_record:
             mouse.play(self.mouse_record, speed_factor=speed_factor)
         # 只播放键盘
-        if self.keyboard_record:
+        if self.keyboard_record and not self.mouse_record:
             keyboard.play(self.keyboard_record, speed_factor=speed_factor)
         # 同时播放鼠标键盘
         if self.mouse_record and self.keyboard_record:
