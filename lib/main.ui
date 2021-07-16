@@ -322,14 +322,14 @@
                </layout>
               </item>
               <item row="1" column="0">
-               <widget class="QLabel" name="record_play_count_label">
+               <widget class="QLabel" name="record_play_rate_label">
                 <property name="text">
-                 <string>循环次数</string>
+                 <string>播放倍率</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLineEdit" name="record_play_count_input">
+               <widget class="QLineEdit" name="record_play_rate_input">
                 <property name="text">
                  <string>1</string>
                 </property>
@@ -344,7 +344,10 @@
                  <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="text">
-                 <string>开始录制</string>
+                 <string>开始录制(CTRL+S)</string>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+S</string>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -360,7 +363,7 @@
                  <string>播放</string>
                 </property>
                 <property name="checkable">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>

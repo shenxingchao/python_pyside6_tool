@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainmiAvaW.ui'
+## Form generated from reading UI file 'mainPHEupv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -177,15 +177,15 @@ class Ui_MainWindow(object):
 
         self.record_form_layout.setLayout(0, QFormLayout.FieldRole, self.record_type_layout)
 
-        self.record_play_count_label = QLabel(self.record_form_widget)
-        self.record_play_count_label.setObjectName(u"record_play_count_label")
+        self.record_play_rate_label = QLabel(self.record_form_widget)
+        self.record_play_rate_label.setObjectName(u"record_play_rate_label")
 
-        self.record_form_layout.setWidget(1, QFormLayout.LabelRole, self.record_play_count_label)
+        self.record_form_layout.setWidget(1, QFormLayout.LabelRole, self.record_play_rate_label)
 
-        self.record_play_count_input = QLineEdit(self.record_form_widget)
-        self.record_play_count_input.setObjectName(u"record_play_count_input")
+        self.record_play_rate_input = QLineEdit(self.record_form_widget)
+        self.record_play_rate_input.setObjectName(u"record_play_rate_input")
 
-        self.record_form_layout.setWidget(1, QFormLayout.FieldRole, self.record_play_count_input)
+        self.record_form_layout.setWidget(1, QFormLayout.FieldRole, self.record_play_rate_input)
 
         self.record_submit_btn = QPushButton(self.record_form_widget)
         self.record_submit_btn.setObjectName(u"record_submit_btn")
@@ -198,7 +198,7 @@ class Ui_MainWindow(object):
         self.record_play_btn = QPushButton(self.record_form_widget)
         self.record_play_btn.setObjectName(u"record_play_btn")
         self.record_play_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.record_play_btn.setCheckable(False)
+        self.record_play_btn.setCheckable(True)
 
         self.record_form_layout.setWidget(2, QFormLayout.FieldRole, self.record_play_btn)
 
@@ -260,9 +260,12 @@ class Ui_MainWindow(object):
         self.record_type_label.setText(QCoreApplication.translate("MainWindow", u"\u5f55\u5236\u7c7b\u578b", None))
         self.record_type_checkbox_1.setText(QCoreApplication.translate("MainWindow", u"\u9f20\u6807", None))
         self.record_type_checkbox_2.setText(QCoreApplication.translate("MainWindow", u"\u952e\u76d8", None))
-        self.record_play_count_label.setText(QCoreApplication.translate("MainWindow", u"\u5faa\u73af\u6b21\u6570", None))
-        self.record_play_count_input.setText(QCoreApplication.translate("MainWindow", u"1", None))
-        self.record_submit_btn.setText(QCoreApplication.translate("MainWindow", u"\u5f00\u59cb\u5f55\u5236", None))
+        self.record_play_rate_label.setText(QCoreApplication.translate("MainWindow", u"\u64ad\u653e\u500d\u7387", None))
+        self.record_play_rate_input.setText(QCoreApplication.translate("MainWindow", u"1", None))
+        self.record_submit_btn.setText(QCoreApplication.translate("MainWindow", u"\u5f00\u59cb\u5f55\u5236(CTRL+S)", None))
+#if QT_CONFIG(shortcut)
+        self.record_submit_btn.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+S", None))
+#endif // QT_CONFIG(shortcut)
         self.record_play_btn.setText(QCoreApplication.translate("MainWindow", u"\u64ad\u653e", None))
     # retranslateUi
 

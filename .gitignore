@@ -15,3 +15,4 @@ tests/**/coverage/
 *.njsproj
 *.sln
 __pycache__
+.qt_for_python

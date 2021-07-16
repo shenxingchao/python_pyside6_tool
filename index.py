@@ -3,6 +3,8 @@
 打包后，需要把qss和images文件夹拖到应用根目录 
 其他问题 设置了centralwidget 背景色导致按钮背景色不见的问题，需要把centralwidget的背景色也放到qss里面去，反正全部写在css里面读取就可以了
 """
+from re import T
+from time import sleep
 from PySide6 import QtGui, QtWidgets
 from PySide6.QtCore import QRect, QSize, Qt, QTimer
 from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QPushButton
@@ -566,6 +568,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.auto_send_timer_count = 0
 
             def stop():
+                # 删除监听
+                keyboard.remove_hotkey("esc")
                 if self.auto_send_submit_btn.isChecked():
                     self.auto_send_submit_btn.click()
 
@@ -591,14 +595,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         @param
         @return
         """
+
+        def stop():
+            if self.record_submit_btn.isChecked():
+                self.record_submit_btn.click()
+
         # 开启
         if bool:
             self.record_submit_btn.setText("停止（ESC）")
             # 定义2个录制类型的选中全局变量 和 录制脚本对象变量
             self.mouse_checked = False
             self.keyboard_checked = False
-            self.mouse_record = None
-            self.keyboard_record = None
+            self.mouse_record = []
+            self.keyboard_record = []
             # 推导式语法 获取选中的checkbox
             checkboxs = [checkbox for checkbox in self.record_type_checkbox_group.buttons() if checkbox.isChecked()]
             # 选中鼠标录制
@@ -615,9 +624,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.keyboard_record = []
                 # 开启键盘录制
                 keyboard.hook(self.keyboard_record.append)
+            # 开启全局键盘监听
+            keyboard.add_hotkey("esc", stop)
         # 关闭
         else:
-            self.record_submit_btn.setText("开始录制")
+            self.record_submit_btn.setText("开始录制(CTRL+S)")
+            # 注意这里 取消选中checked后 快捷键会失效 需要重新设置
+            self.record_submit_btn.setShortcut("Ctrl+S")
             if self.mouse_checked:
                 # 停止鼠标录制
                 mouse.unhook(self.mouse_record.append)
@@ -631,21 +644,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         @param
         @return
         """
-        speed_factor = int(self.record_play_count_input.text())
-        # 只播放鼠标
-        if self.mouse_record and not self.keyboard_record:
-            mouse.play(self.mouse_record, speed_factor=speed_factor)
-        # 只播放键盘
-        if self.keyboard_record and not self.mouse_record:
-            keyboard.play(self.keyboard_record, speed_factor=speed_factor)
-        # 同时播放鼠标键盘
-        if self.mouse_record and self.keyboard_record:
-            k = sorted(self.mouse_record + self.keyboard_record, key=lambda i: i.time)
-            for c, m in it.groupby(k, key=lambda i: isinstance(i, keyboard.KeyboardEvent)):
-                if c:
-                    keyboard.play(m, speed_factor=speed_factor)
-                else:
-                    mouse.play(m, speed_factor=speed_factor)
+
+        def stop():
+            if self.record_play_btn.isChecked():
+                self.record_play_btn.click()
+
+        if bool:
+            speed_factor = int(self.record_play_rate_input.text())
+            self.record_play_btn.setText("停止(ESC)")
+            # 立即刷新界面
+            QApplication.processEvents()
+
+            def fn():
+                # 播放录制脚本
+                k = sorted(self.mouse_record + self.keyboard_record, key=lambda i: i.time)
+                for c, m in it.groupby(k, key=lambda i: isinstance(i, keyboard.KeyboardEvent)):
+                    # 如果没有选中
+                    if not self.record_play_btn.isChecked():
+                        break
+                    # 如果是键盘
+                    if c:
+                        if self.keyboard_record:
+                            keyboard.play(m, speed_factor=speed_factor)
+                    # 否则是鼠标
+                    else:
+                        if self.mouse_record:
+                            mouse.play(m, speed_factor=speed_factor)
+                stop()
+
+            t = Thread(target=fn)
+            # 开启全局键盘监听
+            keyboard.add_hotkey("esc", stop)
+            t.start()
+            t.join()
+
+        else:
+            self.record_play_btn.setText("播放")
 
 
 def main():
