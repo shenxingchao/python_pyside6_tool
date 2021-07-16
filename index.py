@@ -3,8 +3,6 @@
 打包后，需要把qss和images文件夹拖到应用根目录 
 其他问题 设置了centralwidget 背景色导致按钮背景色不见的问题，需要把centralwidget的背景色也放到qss里面去，反正全部写在css里面读取就可以了
 """
-from re import T
-from time import sleep
 from PySide6 import QtGui, QtWidgets
 from PySide6.QtCore import QRect, QSize, Qt, QTimer
 from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox, QPushButton
