@@ -566,8 +566,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.auto_send_timer_count = 0
 
             def stop():
-                # 删除监听
-                keyboard.remove_hotkey("esc")
                 if self.auto_send_submit_btn.isChecked():
                     self.auto_send_submit_btn.click()
 
