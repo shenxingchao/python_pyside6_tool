@@ -27,6 +27,9 @@ from threading import Thread
 # 迭代工具
 import itertools as it
 
+# 调用windll显示任务栏图标 任务栏图标在ui文件里生成的路径不正确他是../ 所以再qtdesinger选择window icon时要选择lib里的favicon.icon 在Lib里面也放一个图标
+import ctypes
+
 """ copy start """
 # 默认标题栏高度 必须设
 DEFAULT_TITILE_BAR_HEIGHT = 40
@@ -686,6 +689,8 @@ def main():
     # 设置全局css样式
     with open("./qss/index.qss", "r", encoding="UTF-8") as f:
         app.setStyleSheet(f.read())
+    # 显示任务栏图标必须
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("app")
     # 显示窗口
     window.show()
     # app.exec()程序一直循环运行直到主窗口被关闭终止进程  sys.exit返回退出时的状态码
