@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainPxPFmM.ui'
+## Form generated from reading UI file 'mainlmgMuO.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -18,9 +18,6 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(500, 500)
-        icon = QIcon()
-        icon.addFile(u"favicon.ico", QSize(), QIcon.Normal, QIcon.Off)
-        MainWindow.setWindowIcon(icon)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)

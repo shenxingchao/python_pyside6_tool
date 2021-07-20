@@ -27,7 +27,7 @@ from threading import Thread
 # 迭代工具
 import itertools as it
 
-# 调用windll显示任务栏图标 任务栏图标在ui文件里生成的路径不正确他是../ 所以再qtdesinger选择window icon时要选择lib里的favicon.icon 在Lib里面也放一个图标
+# 调用windll显示任务栏图标 任务栏图标不要通过QTdesiner去引入，直接在代码里引入 这里在images里面放入图标 打包的时候会把images图标一起打包
 import ctypes
 
 """ copy start """
@@ -689,6 +689,10 @@ def main():
     # 设置全局css样式
     with open("./qss/index.qss", "r", encoding="UTF-8") as f:
         app.setStyleSheet(f.read())
+    # 设置任务栏图标
+    icon = QtGui.QIcon()
+    icon.addFile(u"./images/favicon.ico", QSize(), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    window.setWindowIcon(icon)
     # 显示任务栏图标必须
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("app")
     # 显示窗口
