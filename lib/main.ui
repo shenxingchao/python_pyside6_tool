@@ -110,7 +110,7 @@
         <item>
          <widget class="QStackedWidget" name="main_container_widget">
           <property name="cursor">
-           <cursorShape>CrossCursor</cursorShape>
+           <cursorShape>ArrowCursor</cursorShape>
           </property>
           <property name="currentIndex">
            <number>0</number>
