@@ -85,7 +85,9 @@ class QCustomTitleBar:
         self.min_btn.pressed.connect(self.window.showMinimized)
         # 6.记录恢复前的大小-ps非常有用
         self.restore_window_size = None
-        # 7.设置标题栏鼠标跟踪 鼠标移入触发，不设置，移入标题栏不触发
+        # 7.记录全屏窗口的大小
+        self.window_max_size = None
+        # 8.设置标题栏鼠标跟踪 鼠标移入触发，不设置，移入标题栏不触发
         self.title.setMouseTracking(True)
 
     def setMaxEvent(self, flag=False):
@@ -101,7 +103,7 @@ class QCustomTitleBar:
                     "QPushButton{border-image:url('./images/max.png');background:#ffbe2f;border-radius:10px;}"
                     "QPushButton:hover{background:#ecae27;}"
                 )
-                return self.restore_window_size
+                return {"restore_window_size": self.restore_window_size, "window_max_size": self.window_max_size}
             return None
         else:
             if self.window.isMaximized():
@@ -111,13 +113,15 @@ class QCustomTitleBar:
                     "QPushButton:hover{background:#ecae27;}"
                 )
             else:
+                # 最大化的时候记录最大化前窗口大小 用于返回最大化时拖动窗口恢复后的大小，不然恢复的时候窗口大小是最大化的，这个程序循环帧会取不到恢复后的宽度
+                self.restore_window_size = QSize(self.window.width(), self.window.height())
                 self.window.showMaximized()
                 self.max_btn.setStyleSheet(
                     "QPushButton{border-image:url('./images/restore.png');background:#ffbe2f;border-radius:10px;}"
                     "QPushButton:hover{background:#ecae27;}"
                 )
-                # 最大化的时候记录最大化前窗口大小 用于返回最大化时拖动窗口恢复后的大小，不然恢复的时候窗口大小是最大化的，这个程序循环帧会取不到恢复后的宽度
-                self.restore_window_size = QSize(self.window.width(), self.window.height())
+                # 记录最大化窗口的大小
+                self.window_max_size = QSize(self.window.width(), self.window.height())
 
     def setStyle(self, style: str = ""):
         """
@@ -413,12 +417,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 如果按下才能移动
         elif self.drag_flag:
             # 窗口恢复
-            restore_window_size = self.titleBar.setMaxEvent(True)
+            max_res = self.titleBar.setMaxEvent(True)
             # 如果有恢复窗口，则返回恢复时窗口坐标
-            if restore_window_size:
+            if max_res:
                 # 这里没有解决双屏BUG
                 # 移动到鼠标正确的比例位置 按下时的位置减去(比例 * 恢复前的宽度)
-                self.win_x = self.mouse_x - (self.mouse_x / self.width()) * restore_window_size.width()
+                self.win_x = (
+                    self.mouse_x
+                    - (self.mouse_x / max_res["window_max_size"].width()) * max_res["restore_window_size"].width()
+                )
             # 设置窗口移动的距离
             self.move(self.win_x + offset_x, self.win_y + offset_y)
         return super().mouseMoveEvent(a0)

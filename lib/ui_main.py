@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainlmgMuO.ui'
+## Form generated from reading UI file 'mainInrPVx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -60,6 +60,7 @@ class Ui_MainWindow(object):
         self.main_container_layout.setContentsMargins(20, 20, 20, 20)
         self.main_container_widget = QStackedWidget(self.centralwidget)
         self.main_container_widget.setObjectName(u"main_container_widget")
+        self.main_container_widget.setCursor(QCursor(Qt.CrossCursor))
         self.default_page = QWidget()
         self.default_page.setObjectName(u"default_page")
         self.verticalLayout = QVBoxLayout(self.default_page)
