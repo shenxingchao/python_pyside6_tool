@@ -41,8 +41,14 @@ MIN_WINDOW_HEIGHT = 500
 class QCustomTitleBar:
     def __init__(self, window: QtWidgets):
         self.window = window
-        # 1.设置无边框 和 透明背景
-        self.window.setWindowFlags(Qt.FramelessWindowHint)
+        # 1.设置无边框 和 透明背景 无边框必须设置全，不然会导致点击任务栏不能最小化窗口
+        self.window.setWindowFlags(
+            Qt.Window
+            | Qt.FramelessWindowHint
+            | Qt.WindowSystemMenuHint
+            | Qt.WindowMinimizeButtonHint
+            | Qt.WindowMaximizeButtonHint
+        )
         self.window.setAttribute(Qt.WA_TranslucentBackground)
         # 2.添加自定义的标题栏到最顶部
         self.title = QLabel("Python+Pyside6+小工具", self.window)
