@@ -1,5 +1,5 @@
 """
-引用自定义的标题栏 copy内的就是窗口拖动和缩放的代码 ps:全屏状态下 边界拖动问题 没解决 影响不大
+引用自定义的标题栏 copy内的就是窗口拖动和缩放的代码
 打包后，需要把qss和images文件夹拖到应用根目录 
 其他问题 设置了centralwidget 背景色导致按钮背景色不见的问题，需要把centralwidget的背景色也放到qss里面去，反正全部写在css里面读取就可以了
 """
@@ -239,27 +239,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.win_w = self.width()
         self.win_h = self.height()
 
-        # 如果按下的是鼠标左键
-        if a0.button() == Qt.MouseButton.LeftButton and self.left_up.contains(a0.position().x(), a0.position().y()):
-            self.move_left_up_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.left.contains(a0.position().x(), a0.position().y()):
-            self.move_left_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.left_down.contains(a0.position().x(), a0.position().y()):
-            self.move_left_down_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.up.contains(a0.position().x(), a0.position().y()):
-            self.move_up_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.down.contains(a0.position().x(), a0.position().y()):
-            self.move_down_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.right_up.contains(a0.position().x(), a0.position().y()):
-            self.move_right_up_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.right.contains(a0.position().x(), a0.position().y()):
-            self.move_right_flag = True
-        if a0.button() == Qt.MouseButton.LeftButton and self.right_down.contains(a0.position().x(), a0.position().y()):
-            self.move_right_down_flag = True
-        # 如果按下的是鼠标左键 且在标题栏范围内
-        elif a0.button() == Qt.MouseButton.LeftButton and a0.position().y() < self.titleBar.title.height():
-            # 设置为按下
-            self.drag_flag = True
+        if not self.isMaximized():
+            # 如果按下的是鼠标左键
+            if a0.button() == Qt.MouseButton.LeftButton and self.left_up.contains(a0.position().x(), a0.position().y()):
+                self.move_left_up_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.left.contains(a0.position().x(), a0.position().y()):
+                self.move_left_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.left_down.contains(
+                a0.position().x(), a0.position().y()
+            ):
+                self.move_left_down_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.up.contains(a0.position().x(), a0.position().y()):
+                self.move_up_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.down.contains(a0.position().x(), a0.position().y()):
+                self.move_down_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.right_up.contains(
+                a0.position().x(), a0.position().y()
+            ):
+                self.move_right_up_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.right.contains(a0.position().x(), a0.position().y()):
+                self.move_right_flag = True
+            if a0.button() == Qt.MouseButton.LeftButton and self.right_down.contains(
+                a0.position().x(), a0.position().y()
+            ):
+                self.move_right_down_flag = True
+            # 如果按下的是鼠标左键 且在标题栏范围内
+            elif a0.button() == Qt.MouseButton.LeftButton and a0.position().y() < self.titleBar.title.height():
+                # 设置为按下
+                self.drag_flag = True
+        else:
+            if a0.button() == Qt.MouseButton.LeftButton and a0.position().y() < self.titleBar.title.height():
+                # 设置为按下
+                self.drag_flag = True
         return super().mousePressEvent(a0)
 
     def mouseMoveEvent(self, a0: QtGui.QMouseEvent) -> None:
@@ -274,30 +285,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 计算移动的距离
         offset_x = mouse_move_x - self.mouse_x
         offset_y = mouse_move_y - self.mouse_y
-        # 左上
-        if self.left_up.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeFDiagCursor)
-        # 左
-        elif self.left.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeHorCursor)
-        # 左下
-        elif self.left_down.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeBDiagCursor)
-        # 上
-        elif self.up.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeVerCursor)
-        # 下
-        elif self.down.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeVerCursor)
-        # 右上
-        elif self.right_up.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeBDiagCursor)
-        # 右
-        elif self.right.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeHorCursor)
-        # 右下
-        elif self.right_down.contains(a0.position().x(), a0.position().y()):
-            self.setCursor(Qt.SizeFDiagCursor)
+        # 移动鼠标时设置鼠标样式
+        if not self.isMaximized():
+            # 不是拖动的时才可能是缩放状态
+            if not self.drag_flag:
+                # 左上
+                if self.left_up.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeFDiagCursor)
+                # 左
+                elif self.left.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeHorCursor)
+                # 左下
+                elif self.left_down.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeBDiagCursor)
+                # 上
+                elif self.up.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeVerCursor)
+                # 下
+                elif self.down.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeVerCursor)
+                # 右上
+                elif self.right_up.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeBDiagCursor)
+                # 右
+                elif self.right.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeHorCursor)
+                # 右下
+                elif self.right_down.contains(a0.position().x(), a0.position().y()):
+                    self.setCursor(Qt.SizeFDiagCursor)
+                else:
+                    self.setCursor(Qt.ArrowCursor)
+            else:
+                self.setCursor(Qt.ArrowCursor)
         else:
             self.setCursor(Qt.ArrowCursor)
         # 如果按下且在左上角范围内则缩放（其他代码参考左上）
