@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainMNdnTz.ui'
+## Form generated from reading UI file 'mainchmiPn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -40,14 +40,14 @@ class Ui_MainWindow(object):
         self.auto_send_btn = QPushButton(self.centralwidget)
         self.auto_send_btn.setObjectName(u"auto_send_btn")
         self.auto_send_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.auto_send_btn.setCheckable(True)
+        self.auto_send_btn.setCheckable(False)
 
         self.main_top_layout.addWidget(self.auto_send_btn)
 
         self.record_btn = QPushButton(self.centralwidget)
         self.record_btn.setObjectName(u"record_btn")
         self.record_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.record_btn.setCheckable(True)
+        self.record_btn.setCheckable(False)
 
         self.main_top_layout.addWidget(self.record_btn)
 
